@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h1>This is the employee page</h1>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+      Add New Employee
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add new employee</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <!-- form to add department -->
+              <form>
+                  <!-- full name -->
+                    <div class="form-group">
+                        <label for="">Full name</label>
+                        <input name="full_name" type="text" class="form-control" id="" aria-describedby="" placeholder="">
+                    </div>
+
+                  <!-- gender -->
+                    <div class="form-group">
+                        <label for="">Gender</label>
+                        <select class="form-control" id="">
+                          <option>Male</option>
+                          <option>Female</option>
+                        </select>
+                      </div>
+
+                   <div class="form-group">
+                    <label for="">Email address</label>
+                    <input type="email" class="form-control" id="" placeholder="name@example.com">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="">Phone number</label>
+                    <input type="number" class="form-control" id="" placeholder="">
+                  </div>
+
+                <div class="form-group">
+                    <label for="">Department</label>
+                    <input name="department" type="text" class="form-control" id="" aria-describedby="" placeholder="">
+                </div>
+
+                  <div class="form-group">
+                    <label for="">ID number</label>
+                    <input type="number" class="form-control" id="" placeholder="">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="">KRA Pin</label>
+                    <input type="" class="form-control" id="" placeholder="">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="">Basic salary</label>
+                    <input type="number" class="form-control" id="" placeholder="">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="">Benefits</label>
+                    <input type="number" class="form-control" id="" placeholder="">
+                  </div>
+
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+                <!-- form ends here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock body %}
