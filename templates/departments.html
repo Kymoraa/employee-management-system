@@ -9,6 +9,8 @@
       Add New Department
     </button>
 
+    {% include 'includes/_flash.html' %}
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -20,11 +22,12 @@
             </button>
           </div>
           <div class="modal-body">
+
               <!-- form to add department -->
-              <form>
+              <form action = "/departments" method ="post">
                   <div class="form-group">
                     <label for="">Department Name</label>
-                    <input name="department" type="text" class="form-control" id="" aria-describedby="" placeholder="Enter department name">
+                    <input name="department" type="text" class="form-control" id="" aria-describedby="" placeholder="Enter department name" required>
                     </div>
                   <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -33,5 +36,56 @@
         </div>
       </div>
     </div>
+
+<!--table to display all the departments-->
+  <table class="table">
+      <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Employees in Dept</th>
+            <th scope="col">Department Name</th>
+            <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for each in dpts  %}
+        <tr>
+            <th scope="row">{{ each.id }}</th>
+            <th scope="col"><a href="/departments/employees/{{ each.id }}">View Employees</a> </th>
+            <td>{{ each.name }}</td>
+            <td><button data-toggle="modal" data-target="#editDepartment{{ each.id }}" type="submit" class="btn btn-sm btn-primary">Edit</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="editDepartment{{ each.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit {{ each.name }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+
+                          <!-- form to add department -->
+                          <form action = "/department/edit/{{ each.id }}" method ="post">
+                              <div class="form-group">
+                                <label for="">Department Name</label>
+                                <input value="{{ each.name }}" name="department" type="text" class="form-control" required>
+                                </div>
+                              <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                            <!-- form ends here -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+            </td>
+        </tr>
+      {% endfor%}
+
+      </tbody>
+  </table>
 
 {% endblock body %}

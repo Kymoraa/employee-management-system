@@ -9,6 +9,8 @@
       Add New Employee
     </button>
 
+    {% include 'includes/_flash.html' %}
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -20,18 +22,18 @@
             </button>
           </div>
           <div class="modal-body">
-              <!-- form to add department -->
-              <form>
+              <!-- form to add employees -->
+              <form action="/employees" method="post">
                   <!-- full name -->
                     <div class="form-group">
                         <label for="">Full name</label>
-                        <input name="full_name" type="text" class="form-control" id="" aria-describedby="" placeholder="">
+                        <input name="full_name" type="text" class="form-control" id="" aria-describedby="">
                     </div>
 
                   <!-- gender -->
                     <div class="form-group">
                         <label for="">Gender</label>
-                        <select class="form-control" id="">
+                        <select name="gender" class="form-control" id="">
                           <option>Male</option>
                           <option>Female</option>
                         </select>
@@ -39,46 +41,261 @@
 
                    <div class="form-group">
                     <label for="">Email address</label>
-                    <input type="email" class="form-control" id="" placeholder="name@example.com">
+                    <input name = "email" type="email" class="form-control" id="" placeholder="name@example.com">
                   </div>
 
                   <div class="form-group">
                     <label for="">Phone number</label>
-                    <input type="number" class="form-control" id="" placeholder="">
+                    <input name="phone" type="number" class="form-control" id="" placeholder="">
                   </div>
 
-                <div class="form-group">
+              <div class="form-group">
+
                     <label for="">Department</label>
-                    <input name="department" type="text" class="form-control" id="" aria-describedby="" placeholder="">
-                </div>
+                    <select name="department" type="text" class="form-control" id="" aria-describedby="" >
+                            <option value="0" selected>Choose a department</option>
+                        {% for every in dpts %}
+                            <option value="{{ every.id }}">{{ every.name }}</option>
+                        {% endfor %}
+                    </select>
+              </div>
 
                   <div class="form-group">
                     <label for="">ID number</label>
-                    <input type="number" class="form-control" id="" placeholder="">
+                    <input name="id_number" type="number" class="form-control" id="" placeholder="" required>
                   </div>
 
                   <div class="form-group">
                     <label for="">KRA Pin</label>
-                    <input type="" class="form-control" id="" placeholder="">
+                    <input name="kra_pin" type="text" class="form-control" id="" placeholder="">
                   </div>
 
                   <div class="form-group">
                     <label for="">Basic salary</label>
-                    <input type="number" class="form-control" id="" placeholder="">
+                    <input name="basic_salary" type="number" class="form-control" id="" placeholder="">
                   </div>
 
                   <div class="form-group">
                     <label for="">Benefits</label>
-                    <input type="number" class="form-control" id="" placeholder="">
+                    <input name="benefits" type="number" class="form-control" id="" placeholder="">
                   </div>
 
-
                 <button type="submit" class="btn btn-primary">Submit</button>
+
               </form>
                 <!-- form ends here -->
           </div>
         </div>
       </div>
     </div>
+
+    <!--table to display all the employees-->
+  <table class="table">
+      <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">ID Number</th>
+            <th scope="col">KRA Pin</th>
+            <th scope="col">Salary</th>
+            <th scope="col">Benefits</th>
+            <th scope="col">Department</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for each in emps  %}
+        <tr>
+            <th scope="row">{{ each.id }}</th>
+            <td>{{ each.fullName }}</td>
+            <td>{{ each.gender }}</td>
+            <td>{{ each.email }}</td>
+            <td>{{ each.phoneNumber }}</td>
+            <td>{{ each.idNumber }}</td>
+            <td>{{ each.kraPin }}</td>
+            <td>{{ each.basicSalary }}</td>
+            <td>{{ each.benefits }}</td>
+            <td>{{ each.dept.name }}</td>
+            <td>
+                <button data-toggle = "modal" data-target = "#generatePayroll{{ each.id }}" type="submit" class="btn btn-sm btn-success">Payroll</button>
+
+                        <!-- Modal to generate the Payroll for the employee -->
+                        <div class="modal fade" id="generatePayroll{{ each.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">{{ each.fullName }} Payroll </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+
+                                  <!-- form to display the payroll items -->
+                                        <form action="/generate_payroll/{{ each.id }}" method="post">
+
+                                              <div class="form-group">
+                                                <label for="exampleFormControlSelect1">Select the month</label>
+                                                <select name="month" class="form-control" id="exampleFormControlSelect1">
+                                                  <option selected disabled>Select month</option>
+                                                  <option>January</option>
+                                                  <option>February</option>
+                                                  <option>March</option>
+                                                  <option>April</option>
+                                                  <option>May</option>
+                                                  <option>June</option>
+                                                  <option>July</option>
+                                                  <option>August</option>
+                                                  <option>September</option>
+                                                  <option>October</option>
+                                                  <option>November</option>
+                                                  <option>December</option>
+                                                </select>
+                                          </div>
+                                            <div class="form-group">
+                                               <label for="gross_salary">Basic Salary</label>
+                                               <input  name = "basic" type="text"  readonly class="form-control-plaintext" id="staticEmail" value="{{ each.basicSalary }}">
+                                          </div>
+
+                                           <div class="form-group">
+                                               <label for="gross_salary">Benefits</label>
+                                               <input name = "benefit" type="text"  readonly class="form-control-plaintext" id="staticEmail" value="{{ each.benefits }}">
+                                          </div>
+
+
+                                            <button type="submit" class="btn btn-primary">Generate Payroll</button>
+
+                                        </form>
+                                    <!-- form ends here -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+            </td>
+            <td>
+                <button data-toggle = "modal" data-target = "#editEmployee{{ each.id }}" type="submit" class="btn btn-sm btn-primary">Edit</button>
+
+                <!-- Modal to edit employees -->
+                    <div class="modal fade" id="editEmployee{{ each.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit {{ each.fullName }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+
+                              <!-- form to edit employees -->
+
+              <form action="employee/edit/{{ each.id }}" method="post">
+                  <!-- full name -->
+                    <div class="form-group">
+                        <label for="">Full name</label>
+                        <input value="{{ each.fullName }}" name="full_name" type="text" class="form-control" id="" aria-describedby="">
+                    </div>
+
+                  <!-- gender -->
+                    <div class="form-group">
+                        <label for="">Gender</label>
+                        <select name="gender" class="form-control form-control-sm" required>
+                            <option selected >{{ each.gender }}</option>
+                          <option>Male</option>
+                          <option>Female</option>
+                        </select>
+                      </div>
+
+                   <div class="form-group">
+                    <label for="">Email address</label>
+                    <input value="{{ each.email }}" name = "email" type="email" class="form-control" id="" placeholder="name@example.com">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="">Phone number</label>
+                    <input value = "{{ each.phoneNumber }}" name="phone" type="number" class="form-control" id="" placeholder="">
+                  </div>
+
+                  <div class="form-group">
+                        <label for="">Department</label>
+                        <select name="department" class="form-control form-control-sm" required>}
+                        <option selected value="{{ each.dept.id }}" >{{ each.dept.name }}</option>
+
+                        {% for every in dpts %}
+                            <option value="{{ every.id }}">{{ every.name }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="">ID number</label>
+                    <input value="{{ each.idNumber }}" name="id_number" type="number" class="form-control" id="" placeholder="" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="">KRA Pin</label>
+                    <input value="{{ each.kraPin }}" name="kra_pin" type="text" class="form-control" id="" placeholder="">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="">Basic salary</label>
+                    <input value="{{ each.basicSalary }}" name="basic_salary" type="number" class="form-control" id="" placeholder="">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="">Benefits</label>
+                    <input value="{{ each.benefits }}" name="benefits" type="number" class="form-control" id="" placeholder="">
+                  </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+
+              </form>
+                <!-- form ends here -->
+
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </td>
+
+                <td>
+                    <button data-toggle = "modal" data-target = "#deleteEmployee{{ each.id }}" type="submit" class="btn btn-sm btn-danger">Delete</button>
+
+
+                        <!-- modal for 'are you sure you want to delete this' -->
+                        <div class="modal fade" id="deleteEmployee{{ each.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Confirm delete</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                  <p>Are you sure you want to delete this employee?</p>
+                              </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-sm btn-success" data-dismiss="modal">Cancel</button>
+                                    <form action="/employee/delete/{{ each.id }}" method="post">
+                                        <button type="submit" class="btn btn-sm btn-danger">Confirm</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+            </td>
+        </tr>
+      {% endfor%}
+
+      </tbody>
+  </table>
 
 {% endblock body %}
